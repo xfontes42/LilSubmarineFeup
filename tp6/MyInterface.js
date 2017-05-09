@@ -69,6 +69,23 @@ MyInterface.prototype.init = function(application) {
 	
 	this.gui.add(this.scene, 'sub_texture', [ 'none', 'Metal', 'Rust', 'Gold', 'Wood', 'Fabulous'] );
 
+	var targets = this.gui.addFolder("Targets");
+	targets.open();
+	var cubo = targets.addFolder("Cubo");
+	cubo.add(this.scene,'target1X',-13,27);
+	cubo.add(this.scene,'target1Y',0,5);
+	cubo.add(this.scene,'target1Z',-13,27);
+	var cilindro = targets.addFolder("Cilindro");
+	cilindro.add(this.scene,'target2X',-13,27);
+	cilindro.add(this.scene,'target2Y',0,5);
+	cilindro.add(this.scene,'target2Z',-13,27);
+	var mesa = targets.addFolder("Mesa");
+	mesa.add(this.scene,'target3X',-13,27);
+	mesa.add(this.scene,'target3Y',0,5);
+	mesa.add(this.scene,'target3Z',-13,27);
+
+
+
 	return true;
 };
 
@@ -117,7 +134,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 			break;
 
 		case(70):  //F - mostrar/disparar torpedo
-		 	this.scene.submarine.torpedo.hide = !this.scene.submarine.torpedo.hide;
+		 	this.scene.submarine.fireTorpedo();
 			break;
 
 	};

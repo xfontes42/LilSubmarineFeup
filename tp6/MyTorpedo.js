@@ -15,6 +15,12 @@ function MyTorpedo(scene){
 	this.myBackFinVert = new MyTrapezoid(scene);
 	this.myBackFinHori = new MyTrapezoid(scene);
 	this.hide = true;
+	this.rotation = 0;
+	this.inclinacao = 0;
+	this.posX = 0;
+	this.posY = 0;
+	this.zed = 0;
+	this.dist = 0;
 };
 
 MyTorpedo.prototype = Object.create(CGFobject.prototype);

@@ -26,7 +26,7 @@ LightingScene.prototype.init = function(application) {
 	this.Red = 0.1;
 	this.Green = 0.1;
 	this.Blue = 0.3;
-	this.LuzAmbiente = 0.05;
+	this.LuzAmbiente = 0;
 	this.Luz1 = false;
 	this.Luz2 = true;
 	this.Luz3 = false;
@@ -34,6 +34,16 @@ LightingScene.prototype.init = function(application) {
 	this.Luz5 = true;
 	this.Clock = true;
 	this.sub_texture = 'none';
+
+	this.target1X = -8;
+	this.target1Y = 0;
+	this.target1Z = 4;
+	this.target2X = 13;
+	this.target2Y = 0;
+	this.target2Z = -3;
+	this.target3X = -12;
+	this.target3Y = 0;
+	this.target3Z = -10;
 
 	this.initCameras();
 
@@ -279,7 +289,7 @@ LightingScene.prototype.init = function(application) {
 };
 
 LightingScene.prototype.initCameras = function() {
-	this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(30, 30, 30), vec3.fromValues(0, 0, 0));
+	this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(40, 40, 40), vec3.fromValues(0, 0, 0));
 };
 
 LightingScene.prototype.initLights = function() {
@@ -478,17 +488,17 @@ LightingScene.prototype.display = function() {
 
 	//Alvos
 	this.pushMatrix();
-    this.translate(-8,0.5,4);
+    this.translate(this.target1X,this.target1Y,this.target1Z);
     this.target1.display();		//cubo
     this.popMatrix();
 
 	this.pushMatrix();
-    this.translate(13,0,-3);
+    this.translate(this.target2X,this.target2Y,this.target2Z);
     this.target0.display();		//cilindro
     this.popMatrix();
 
 	this.pushMatrix();
-    this.translate(-12,0,-15);
+    this.translate(this.target3X,this.target3Y,this.target3Z);
     this.target2.display();		//mesa
     this.popMatrix();
 

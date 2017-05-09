@@ -40,6 +40,12 @@ MyTarget.prototype.display = function () {
 		this.scene.popMatrix();
 
 		this.scene.pushMatrix();
+		this.scene.rotate(Math.PI/2, 1, 0,0);
+		this.scene.TargetSides.apply();
+		this.topo.display();
+		this.scene.popMatrix();
+
+		this.scene.pushMatrix();
 		this.scene.rotate(-Math.PI/2, 1, 0,0);
 		this.scene.TargetSides.apply();
 		this.corpo.display();
@@ -53,6 +59,7 @@ MyTarget.prototype.display = function () {
     		this.scene.TargetSquareTop.apply();
 
     	this.scene.pushMatrix();
+    	this.scene.translate(0,0.5,0);
 		this.corpo.display();
 		this.scene.popMatrix();
     
