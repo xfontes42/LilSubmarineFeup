@@ -92,7 +92,7 @@ LightingScene.prototype.init = function(application) {
     this.materialTampo.setDiffuse(0.6,0.6,0.6,1);    //(0.86,0.86,0.86,1);
     this.materialTampo.setSpecular(0.0,0.2,0.8,1);    //(0.1,0.2,0.3,1);
     this.materialTampo.setShininess(10);            //(100); 
-    this.materialTampo.loadTexture('./resources/images/TargetSquareTop.png');
+    this.materialTampo.loadTexture('./resources/images/TargetSquare.png');
 
     this.materialPernas = new CGFappearance(this);
     this.materialPernas.setAmbient(0.3,0.3,0.3,1);    //(0.0,0.0,0.0,1);
