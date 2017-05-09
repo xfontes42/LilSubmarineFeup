@@ -131,7 +131,7 @@ MySubmarine.prototype.calculateBezier = function(coord1,coord2,coord3,coord4,t){
 
 MySubmarine.prototype.calculateBezierDeri = function(coord1,coord2,coord3,coord4,t){
 	var result = 0;
-	result += Math.pow((1-t),2)*3*coord1;
+	result += Math.pow((1-t),2)*-3*coord1;
 	result += (9*t*t-12*t+3)*coord2;
 	result += (6*t-9*t*t)*coord3; 
 	result += Math.pow(t,2)*3*coord4;
@@ -223,7 +223,7 @@ MySubmarine.prototype.update = function(delta){
 // 			return;
 // 		}
 		this.torpedo.rotation = Math.atan2(dX,dZ);
-		this.torpedo.inclinacao = Math.atan2(dY,dZ);
+		//this.torpedo.inclinacao = Math.atan2(dZ,dY); //SOME PROBLEMS HERE WHAT THE FUK
 
 	}
 
