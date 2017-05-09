@@ -483,13 +483,13 @@ LightingScene.prototype.display = function() {
     this.popMatrix();
 
 	this.pushMatrix();
-    this.translate(7,0,-3);
+    this.translate(13,0,-3);
     this.target0.display();		//cilindro
     this.popMatrix();
 
 	this.pushMatrix();
-    this.translate(-2,0,-5);
-    this.target2.display();
+    this.translate(-12,0,-15);
+    this.target2.display();		//mesa
     this.popMatrix();
 
 	//Relogio
