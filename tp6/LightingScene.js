@@ -44,6 +44,7 @@ LightingScene.prototype.init = function(application) {
 	this.target3X = -12;
 	this.target3Y = 0;
 	this.target3Z = -10;
+	this.TorpedoSpeed = 1;
 
 	this.target1coords = [this.target1X ,this.target1Y,this.target1Z];
 	this.target2coords = [this.target2X ,this.target2Y,this.target2Z];

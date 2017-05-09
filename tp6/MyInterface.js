@@ -71,19 +71,20 @@ MyInterface.prototype.init = function(application) {
 
 	var targets = this.gui.addFolder("Targets");
 	targets.open();
-	var cubo = targets.addFolder("Cubo");
+	var cubo = targets.addFolder("Cube");
 	cubo.add(this.scene,'target1X',-13,27);
 	cubo.add(this.scene,'target1Y',0,5);
 	cubo.add(this.scene,'target1Z',-13,27);
-	var cilindro = targets.addFolder("Cilindro");
+	var cilindro = targets.addFolder("Cylinder");
 	cilindro.add(this.scene,'target2X',-13,27);
 	cilindro.add(this.scene,'target2Y',0,5);
 	cilindro.add(this.scene,'target2Z',-13,27);
-	var mesa = targets.addFolder("Mesa");
+	var mesa = targets.addFolder("Table");
 	mesa.add(this.scene,'target3X',-13,27);
 	mesa.add(this.scene,'target3Y',0,5);
 	mesa.add(this.scene,'target3Z',-13,27);
 	targets.add(this.scene,'resetTargets');
+	targets.add(this.scene,'TorpedoSpeed',0.5,20);
 
 
 
