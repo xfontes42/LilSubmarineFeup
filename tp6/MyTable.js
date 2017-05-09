@@ -21,7 +21,7 @@ MyTable.prototype.display = function(){
 		this.scene.pushMatrix();
 	this.scene.translate(0,3.6,0);
 	this.scene.scale(5,0.3,3);
-	this.scene.materialTampo.apply();
+	//this.scene.materialTampo.apply();
     this.tampo.display();
 	this.scene.popMatrix();   //tampo
 

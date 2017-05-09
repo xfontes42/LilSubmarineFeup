@@ -21,6 +21,7 @@ function MyTorpedo(scene){
 	this.posY = 0;
 	this.zed = 0;
 	this.dist = 0;
+	this.targetLocation = [];
 };
 
 MyTorpedo.prototype = Object.create(CGFobject.prototype);

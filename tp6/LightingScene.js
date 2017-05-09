@@ -45,6 +45,10 @@ LightingScene.prototype.init = function(application) {
 	this.target3Y = 0;
 	this.target3Z = -10;
 
+	this.target1coords = [this.target1X ,this.target1Y,this.target1Z];
+	this.target2coords = [this.target2X ,this.target2Y,this.target2Z];
+	this.target3coords = [this.target3X ,this.target3Y,this.target3Z];
+
 	this.initCameras();
 
 	this.initLights();
@@ -64,8 +68,8 @@ LightingScene.prototype.init = function(application) {
 
  	this.submarine = new MySubmarine(this);
 	this.target1 = new MyTarget(this, 1);
-	this.target2 = new MyTarget(this, 2);
-	this.target0 = new MyTarget(this, 0);
+	this.target3 = new MyTarget(this, 2);
+	this.target2 = new MyTarget(this, 0);
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);
@@ -494,12 +498,12 @@ LightingScene.prototype.display = function() {
 
 	this.pushMatrix();
     this.translate(this.target2X,this.target2Y,this.target2Z);
-    this.target0.display();		//cilindro
+    this.target2.display();		//cilindro
     this.popMatrix();
 
 	this.pushMatrix();
     this.translate(this.target3X,this.target3Y,this.target3Z);
-    this.target2.display();		//mesa
+    this.target3.display();		//mesa
     this.popMatrix();
 
 	//Relogio
@@ -527,6 +531,10 @@ LightingScene.prototype.update = function(currTime) {
 	this.setUpdatePeriod(1000/this.fps); //VER SE ISTO NAO DA PROBLEMAS
 	
 	this.currSubmarineAppearance = this.submarineAppearanceList[this.sub_texture];
+
+	this.target1coords = [this.target1X ,this.target1Y,this.target1Z];
+	this.target2coords = [this.target2X ,this.target2Y,this.target2Z];
+	this.target3coords = [this.target3X ,this.target3Y,this.target3Z];
 
 	if(this.Luz1){
 		this.lights[0].setVisible(true);
@@ -584,6 +592,13 @@ LightingScene.prototype.update = function(currTime) {
 
 
 LightingScene.prototype.tickClock = function ()
-{ if(this.Clock)
-	this.Clock = false;
-	else this.Clock = true;};
+{ this.Clock = !this.Clock;
+	};
+
+LightingScene.prototype.resetTargets = function ()
+{
+	this.submarine.countTorpedo = 0;
+	this.target1.hit = false;
+	this.target2.hit = false;
+	this.target3.hit = false;
+};

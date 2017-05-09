@@ -83,6 +83,7 @@ MyInterface.prototype.init = function(application) {
 	mesa.add(this.scene,'target3X',-13,27);
 	mesa.add(this.scene,'target3Y',0,5);
 	mesa.add(this.scene,'target3Z',-13,27);
+	targets.add(this.scene,'resetTargets');
 
 
 

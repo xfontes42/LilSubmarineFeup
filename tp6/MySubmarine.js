@@ -136,4 +136,19 @@ MySubmarine.prototype.fireTorpedo = function(){
 	this.torpedo.dist = this.dist;
 	this.torpedo.inclinacao = this.inclinacao;
 	this.torpedo.hide = false;
+	switch(this.countTorpedo){
+		case 1:
+			this.torpedo.targetLocation = this.scene.target1coords;
+			break;
+		case 2:
+			this.torpedo.targetLocation = this.scene.target2coords;
+			break;
+		case 3:
+			this.torpedo.targetLocation = this.scene.target3coords;
+			break;
+		default:
+			console.log("No more torpedos");
+			break;
+	}
+	this.torpedo.targetLocation.push()
 };
