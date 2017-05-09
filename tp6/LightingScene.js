@@ -478,7 +478,7 @@ LightingScene.prototype.display = function() {
 
 	//Alvos
 	this.pushMatrix();
-    this.translate(-8,5,4);
+    this.translate(-8,0.5,4);
     this.target1.display();		//cubo
     this.popMatrix();
 
