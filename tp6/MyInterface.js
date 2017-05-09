@@ -136,6 +136,9 @@ MyInterface.prototype.processKeyboard = function(event) {
 			break;
 
 		case(70):  //F - mostrar/disparar torpedo
+			if(this.scene.submarine.countTorpedo > 0)
+				if(this.scene.submarine.torpedo.timeAt < 1)
+					return;
 		 	this.scene.submarine.fireTorpedo();
 			break;
 

@@ -18,8 +18,8 @@ function MyTorpedo(scene){
 	this.rotation = 0;
 	this.inclinacao = 0;
 	this.posX = 0;
+	this.posZ = 0;
 	this.posY = 0;
-	this.zed = 0;
 	this.dist = 0;
 	this.timeAt = 0;
 	this.linearDistance = 0;

@@ -15,8 +15,8 @@ function MySubmarine(scene, minS, maxS,minT, maxT, rot){
 	this.rotation = rot || 0;
 	this.dist = 0;
 	this.posX = 0;
+	this.posZ = 0;
 	this.posY = 0;
-	this.zed = 0;
 	this.velocidade = 0;
 	this.inclinacao = 0;
 	this.body = new MySubmarineModel(scene);
@@ -45,7 +45,7 @@ MySubmarine.prototype.initBuffers = function () {
 
 MySubmarine.prototype.display = function () {
 	this.scene.pushMatrix();
-	this.scene.translate(this.posX,this.zed,this.posY);
+	this.scene.translate(this.posX,this.posY,this.posZ);
 	this.scene.rotate(this.rotation*degToRad,0,1,0);
 	this.scene.rotate(this.inclinacao*10*degToRad,1,0,0);
 	//CGFobject.prototype.display.call(this);
@@ -54,9 +54,9 @@ MySubmarine.prototype.display = function () {
 
 	if(this.countTorpedo > 0){
 	this.scene.pushMatrix();
-	this.scene.translate(this.torpedo.posX,this.torpedo.zed,this.torpedo.posY);
+	this.scene.translate(this.torpedo.posX,this.torpedo.posY,this.torpedo.posZ);
 	this.scene.rotate(this.torpedo.rotation,0,1,0);
-	this.scene.rotate(this.torpedo.inclinacao,1,0,0);
+	//this.scene.rotate(this.torpedo.inclinacao,1,0,0);
 	this.scene.submarineAppearances[this.scene.currSubmarineAppearance].apply();
     this.torpedo.display();
     this.scene.popMatrix();
@@ -67,8 +67,8 @@ MySubmarine.prototype.display = function () {
 };
 
 MySubmarine.prototype.dive = function (move) {
-	this.zed += move;
-	console.log(this.zed);
+	this.posY += move;
+	console.log(this.posY);
 };
 
 
@@ -80,7 +80,7 @@ MySubmarine.prototype.rotateSub = function (deg) {
 MySubmarine.prototype.goForward = function (comp) {
 	this.dist += comp;
 	this.posX += comp*Math.sin(this.rotation*degToRad);
-	this.posY += comp*Math.cos(this.rotation*degToRad);
+	this.posZ += comp*Math.cos(this.rotation*degToRad);
 	//console.log(this.dist);
 };
 
@@ -142,14 +142,14 @@ MySubmarine.prototype.fireTorpedo = function(){
 	this.countTorpedo++;
 	this.torpedo = new MyTorpedo(this.scene);
 	this.torpedo.posX = this.posX;		//x
-	this.torpedo.posY = this.posY;   //z
-	this.torpedo.zed = this.zed-1.2; //y
+	this.torpedo.posZ = this.posZ;   //z
+	this.torpedo.posY = this.posY-1.2; //y
 
 	this.torpedo.dist = this.dist;
 	this.torpedo.inclinacao = this.inclinacao;
 	this.torpedo.hide = false;
-	this.torpedo.origin.push(this.torpedo.posX,this.torpedo.zed,this.torpedo.posY);
-	this.torpedo.point2.push(this.torpedo.posX+6*Math.sin(this.torpedo.rotation*degToRad),this.torpedo.zed,this.torpedo.posY+6*Math.cos(this.torpedo.rotation*degToRad));
+	this.torpedo.origin.push(this.torpedo.posX,this.torpedo.posY,this.torpedo.posZ);
+	this.torpedo.point2.push(this.torpedo.posX+6*Math.sin(this.torpedo.rotation*degToRad),this.torpedo.posY,this.torpedo.posZ+6*Math.cos(this.torpedo.rotation*degToRad));
 	switch(this.countTorpedo){
 		case 1:
 			this.torpedo.targetLocation = this.scene.target1coords;
@@ -168,7 +168,7 @@ MySubmarine.prototype.fireTorpedo = function(){
 	this.torpedo.point3.push(this.torpedo.targetLocation[0],this.torpedo.targetLocation[1]+3,this.torpedo.targetLocation[2]);
 
 	this.torpedo.linearDistance = Math.sqrt(Math.pow(this.torpedo.targetLocation[0]-this.torpedo.posX,2)
-	+Math.pow(this.torpedo.targetLocation[1]-this.torpedo.zed,2)+Math.pow(this.torpedo.targetLocation[2]-this.posY,2));
+	+Math.pow(this.torpedo.targetLocation[1]-this.torpedo.posY,2)+Math.pow(this.torpedo.targetLocation[2]-this.posZ,2));
 
 	console.log(this.torpedo.origin);
 	console.log(this.torpedo.point2);
@@ -184,6 +184,7 @@ MySubmarine.prototype.update = function(delta){
 
 	if(this.countTorpedo < 1)
 		return;
+	
 	this.torpedo.timeAt += (this.scene.TorpedoSpeed*delta)/(this.torpedo.linearDistance*1000);
 	if(this.torpedo.timeAt >= 1){
 		this.torpedo.hide = true;
@@ -201,29 +202,15 @@ MySubmarine.prototype.update = function(delta){
 	}
 	else {
 		this.torpedo.posX = this.calculateBezier(this.torpedo.origin[0],this.torpedo.point2[0],this.torpedo.point3[0],this.torpedo.targetLocation[0],this.torpedo.timeAt);
-		this.torpedo.zed = this.calculateBezier(this.torpedo.origin[1],this.torpedo.point2[1],this.torpedo.point3[1],this.torpedo.targetLocation[1],this.torpedo.timeAt);
-		this.torpedo.posY = this.calculateBezier(this.torpedo.origin[2],this.torpedo.point2[2],this.torpedo.point3[2],this.torpedo.targetLocation[2],this.torpedo.timeAt);
+		this.torpedo.posY = this.calculateBezier(this.torpedo.origin[1],this.torpedo.point2[1],this.torpedo.point3[1],this.torpedo.targetLocation[1],this.torpedo.timeAt);
+		this.torpedo.posZ = this.calculateBezier(this.torpedo.origin[2],this.torpedo.point2[2],this.torpedo.point3[2],this.torpedo.targetLocation[2],this.torpedo.timeAt);
 	
 		var dX = this.calculateBezierDeri(this.torpedo.origin[0],this.torpedo.point2[0],this.torpedo.point3[0],this.torpedo.targetLocation[0],this.torpedo.timeAt);
 		var dY = this.calculateBezierDeri(this.torpedo.origin[1],this.torpedo.point2[1],this.torpedo.point3[1],this.torpedo.targetLocation[1],this.torpedo.timeAt);
 		var dZ = this.calculateBezierDeri(this.torpedo.origin[2],this.torpedo.point2[2],this.torpedo.point3[2],this.torpedo.targetLocation[2],this.torpedo.timeAt);
 		
-// 		if(dZ < 0.00001){
-// 			if(dX > 0)
-// 				this.torpedo.rotation = Math.PI/2;
-// 			else if(dX < 0)
-// 				this.torpedo.rotation = -Math.PI/2;
-
-
-// 			if(dY > 0)
-// 				this.torpedo.inclinacao = Math.PI/2;
-// 			else if(dY < 0)
-// 				this.torpedo.inclinacao = -Math.PI/2;
-
-// 			return;
-// 		}
 		this.torpedo.rotation = Math.atan2(dX,dZ);
-		//this.torpedo.inclinacao = Math.atan2(dZ,dY); //SOME PROBLEMS HERE WHAT THE FUK
+		this.torpedo.inclinacao = Math.atan2(-dY,dZ); //SOME PROBLEMS HERE WHAT THE FUK
 
 	}
 
