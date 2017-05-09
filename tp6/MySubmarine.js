@@ -20,6 +20,7 @@ function MySubmarine(scene, minS, maxS,minT, maxT, rot){
 	this.velocidade = 0;
 	this.inclinacao = 0;
 	this.body = new MySubmarineModel(scene);
+	this.torpedo = new MyTorpedo(scene);
 	this.initBuffers();
 };
 
@@ -50,6 +51,19 @@ MySubmarine.prototype.display = function () {
 	//CGFobject.prototype.display.call(this);
 	this.body.display();
 	this.scene.popMatrix();
+
+
+	this.scene.pushMatrix();
+	this.scene.translate(this.posX,this.zed-1.5,this.posY+1.5);
+	this.scene.translate(0,1.5,-1.5);
+	this.scene.rotate(this.rotation*degToRad,0,1,0);
+	this.scene.rotate(this.inclinacao*10*degToRad,1,0,0);
+	this.scene.translate(0,-1.5,1.5);
+	this.scene.submarineAppearances[this.scene.currSubmarineAppearance].apply();
+    this.torpedo.display();
+    this.scene.popMatrix();
+
+
 };
 
 MySubmarine.prototype.dive = function (move) {
@@ -108,3 +122,7 @@ MySubmarine.prototype.inclina = function(unit){
 	
 	this.body.inclinaHori(this.inclinacao);
 }
+
+MySubmarine.prototype.calculateBezier = function(coord1,coord2,coord3,coord4,t){
+	return (((-(3*t*t*t)+(3*t*t)-(3*t)+1)*coord1)+((3*t*t*t-6*t*t+3*t)*coord2)+((3*t*t-3*t*t*t)*coord3)+((t*t*t)*coord4));
+};

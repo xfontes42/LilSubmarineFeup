@@ -117,7 +117,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 			break;
 
 		case(70):  //F - mostrar/disparar torpedo
-		 	this.scene.torpedo.hide = !this.scene.torpedo.hide;
+		 	this.scene.submarine.torpedo.hide = !this.scene.submarine.torpedo.hide;
 			break;
 
 	};
@@ -126,7 +126,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 MyInterface.prototype.processKeyDown = function(event){
 	switch (event.keyCode)
 	{
-		case (65):	//A -  only works for capital 'A', as it is
+		case (65):	//A
 			this.scene.submarine.rotateLeme(-1);
 			break;
 		

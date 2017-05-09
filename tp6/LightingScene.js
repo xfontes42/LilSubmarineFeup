@@ -53,7 +53,7 @@ LightingScene.prototype.init = function(application) {
  	this.semiSphere = new MySemiSphere(this,20,200);
 
  	this.submarine = new MySubmarine(this);
-	this.torpedo = new MyTorpedo(this);
+	
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);
@@ -440,15 +440,6 @@ LightingScene.prototype.display = function() {
 	this.submarine.display();
 	this.popMatrix();
 
-	this.pushMatrix();
-	this.translate(this.submarine.posX,this.submarine.zed-1.5,this.submarine.posY+1.5);
-	this.translate(0,1.5,-1.5);
-	this.rotate(this.submarine.rotation*degToRad,0,1,0);
-	this.rotate(this.submarine.inclinacao*10*degToRad,1,0,0);
-	this.translate(0,-1.5,1.5);
-	this.submarineAppearances[this.currSubmarineAppearance].apply();
-    this.torpedo.display();
-    this.popMatrix();
 
 
 	//Relogio
