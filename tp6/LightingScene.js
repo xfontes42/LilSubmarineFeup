@@ -53,7 +53,9 @@ LightingScene.prototype.init = function(application) {
  	this.semiSphere = new MySemiSphere(this,20,200);
 
  	this.submarine = new MySubmarine(this);
-	
+	this.target1 = new MyTarget(this, 1);
+	this.target2 = new MyTarget(this, 2);
+	this.target0 = new MyTarget(this, 0);
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);
@@ -86,19 +88,19 @@ LightingScene.prototype.init = function(application) {
 	this.materialB.setShininess(120);    
 
 	this.materialTampo = new CGFappearance(this);
-	this.materialTampo.setAmbient(0.0,0.0,0.0,1);
-	this.materialTampo.setDiffuse(0.86,0.86,0.86,1);
-	this.materialTampo.setSpecular(0.1,0.2,0.3,1);	
-	this.materialTampo.setShininess(100); 
-	this.materialTampo.loadTexture('./resources/images/table.png');
+    this.materialTampo.setAmbient(0.3,0.3,0.3,1);    //(0.0,0.0,0.0,1);
+    this.materialTampo.setDiffuse(0.6,0.6,0.6,1);    //(0.86,0.86,0.86,1);
+    this.materialTampo.setSpecular(0.0,0.2,0.8,1);    //(0.1,0.2,0.3,1);
+    this.materialTampo.setShininess(10);            //(100); 
+    this.materialTampo.loadTexture('./resources/images/TargetSquareTop.png');
 
-	this.materialPernas = new CGFappearance(this);
-	this.materialPernas.setAmbient(0.0,0.0,0.0,1);
-	this.materialPernas.setDiffuse(0.2,0.2,0.2,1);
-	this.materialPernas.setSpecular(0.7,0.7,0.7,1);	
-	this.materialPernas.setShininess(10);
-	this.materialPernas.loadTexture('./resources/images/leg.png');
-	this.materialPernas.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
+    this.materialPernas = new CGFappearance(this);
+    this.materialPernas.setAmbient(0.3,0.3,0.3,1);    //(0.0,0.0,0.0,1);
+    this.materialPernas.setDiffuse(0.6,0.6,0.6,1);    //(0.2,0.2,0.2,1);
+    this.materialPernas.setSpecular(0.0,0.2,0.8,1);    //(0.7,0.7,0.7,1);
+    this.materialPernas.setShininess(10);
+    this.materialPernas.loadTexture('./resources/images/TargetSides.png');
+    this.materialPernas.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
 	this.windowAppearance = new CGFappearance(this);
 	this.windowAppearance.setAmbient(0.0,0.0,0.0,1);
@@ -225,6 +227,40 @@ LightingScene.prototype.init = function(application) {
     this.TorpedoFace.setShininess(10);  //10
     this.TorpedoFace.loadTexture('./resources/images/AngrySmile.png');
 
+	this.TargetRoundTop = new CGFappearance(this);
+    this.TargetRoundTop.setAmbient(0.3,0.3,0.3,1);
+    this.TargetRoundTop.setDiffuse(0.6,0.6,0.6,1);
+    this.TargetRoundTop.setSpecular(0.0,0.2,0.8,1);
+    this.TargetRoundTop.setShininess(10);  //10
+    this.TargetRoundTop.loadTexture('./resources/images/TargetRound.png');
+
+    this.TargetRoundDestroyed = new CGFappearance(this);
+    this.TargetRoundDestroyed.setAmbient(0.3,0.3,0.3,1);
+    this.TargetRoundDestroyed.setDiffuse(0.6,0.6,0.6,1);
+    this.TargetRoundDestroyed.setSpecular(0.0,0.2,0.8,1);
+    this.TargetRoundDestroyed.setShininess(10);  //10
+    this.TargetRoundDestroyed.loadTexture('./resources/images/TargetRoundDestroyed.png');
+
+    this.TargetSquareTop = new CGFappearance(this);
+    this.TargetSquareTop.setAmbient(0.3,0.3,0.3,1);
+    this.TargetSquareTop.setDiffuse(0.6,0.6,0.6,1);
+    this.TargetSquareTop.setSpecular(0.0,0.2,0.8,1);
+    this.TargetSquareTop.setShininess(10);  //10
+    this.TargetSquareTop.loadTexture('./resources/images/TargetSquare.png');
+
+    this.TargetSquareDestroyed = new CGFappearance(this);
+    this.TargetSquareDestroyed.setAmbient(0.3,0.3,0.3,1);
+    this.TargetSquareDestroyed.setDiffuse(0.6,0.6,0.6,1);
+    this.TargetSquareDestroyed.setSpecular(0.0,0.2,0.8,1);
+    this.TargetSquareDestroyed.setShininess(10);  //10
+    this.TargetSquareDestroyed.loadTexture('./resources/images/TargetSquareDestroyed.png');
+
+    this.TargetSides = new CGFappearance(this);
+    this.TargetSides.setAmbient(0.3,0.3,0.3,1);
+    this.TargetSides.setDiffuse(0.6,0.6,0.6,1);
+    this.TargetSides.setSpecular(0.0,0.2,0.8,1);
+    this.TargetSides.setShininess(10);  //10
+    this.TargetSides.loadTexture('./resources/images/TargetSides.png');
 
 	this.glassEye = new CGFappearance(this);
 	this.glassEye.setAmbient(0.3,0.3,0.3,1);
@@ -440,7 +476,21 @@ LightingScene.prototype.display = function() {
 	this.submarine.display();
 	this.popMatrix();
 
+	//Alvos
+	this.pushMatrix();
+    this.translate(-8,5,4);
+    this.target1.display();		//cubo
+    this.popMatrix();
 
+	this.pushMatrix();
+    this.translate(7,0,-3);
+    this.target0.display();		//cilindro
+    this.popMatrix();
+
+	this.pushMatrix();
+    this.translate(-2,0,-5);
+    this.target2.display();
+    this.popMatrix();
 
 	//Relogio
 	this.pushMatrix();
