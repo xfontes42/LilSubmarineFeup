@@ -56,9 +56,9 @@ MySubmarine.prototype.display = function () {
 	this.scene.pushMatrix();
 	this.scene.translate(this.torpedo.posX,this.torpedo.posY,this.torpedo.posZ);
 	this.scene.rotate(this.torpedo.rotation,0,1,0);
-	//this.scene.rotate(this.torpedo.inclinacao,1,0,0);
+	this.scene.rotate(-this.torpedo.inclinacao,1,0,0);
 	this.scene.submarineAppearances[this.scene.currSubmarineAppearance].apply();
-    this.torpedo.display();
+    this.torpedo.display(); 
     this.scene.popMatrix();
 	}
 	
@@ -210,7 +210,8 @@ MySubmarine.prototype.update = function(delta){
 		var dZ = this.calculateBezierDeri(this.torpedo.origin[2],this.torpedo.point2[2],this.torpedo.point3[2],this.torpedo.targetLocation[2],this.torpedo.timeAt);
 		
 		this.torpedo.rotation = Math.atan2(dX,dZ);
-		this.torpedo.inclinacao = Math.atan2(-dY,dZ); //SOME PROBLEMS HERE WHAT THE FUK
+		//this.torpedo.inclinacao = Math.atan2(-dY,dZ); //SOME PROBLEMS HERE WHAT THE FUK
+		this.torpedo.inclinacao = Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX)); //SOME PROBLEMS HERE WHAT THE FUK
 
 	}
 
