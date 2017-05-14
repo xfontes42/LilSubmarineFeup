@@ -147,6 +147,7 @@ MySubmarine.prototype.fireTorpedo = function(){
 
 	this.torpedo.dist = this.dist;
 	this.torpedo.inclinacao = this.inclinacao;
+	this.torpedo.rotation = this.rotation;
 	this.torpedo.hide = false;
 	this.torpedo.origin.push(this.torpedo.posX,this.torpedo.posY,this.torpedo.posZ);
 	this.torpedo.point2.push(this.torpedo.posX+6*Math.sin(this.torpedo.rotation*degToRad),this.torpedo.posY,this.torpedo.posZ+6*Math.cos(this.torpedo.rotation*degToRad));
