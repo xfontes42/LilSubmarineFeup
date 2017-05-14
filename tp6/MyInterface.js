@@ -1,3 +1,4 @@
+var degToRad = Math.PI / 180.0;
 /**
  * MyInterface
  * @constructor
@@ -7,8 +8,12 @@ function MyInterface() {
 	CGFinterface.call(this);
 };
 
+var global_var_scene;
+
 MyInterface.prototype = Object.create(CGFinterface.prototype);
 MyInterface.prototype.constructor = MyInterface;
+
+
 
 /**
  * init
@@ -72,22 +77,50 @@ MyInterface.prototype.init = function(application) {
 	var targets = this.gui.addFolder("Targets");
 	targets.open();
 	var cubo = targets.addFolder("Cube");
-	cubo.add(this.scene,'target1X',-13,27);
-	cubo.add(this.scene,'target1Y',0,5);
-	cubo.add(this.scene,'target1Z',-13,27);
+	var cuboX = cubo.add(this.scene,'target1X',-13,27);
+	var cuboY = cubo.add(this.scene,'target1Y',-5,10);
+	var cuboZ = cubo.add(this.scene,'target1Z',-13,27);
 	var cilindro = targets.addFolder("Cylinder");
-	cilindro.add(this.scene,'target2X',-13,27);
-	cilindro.add(this.scene,'target2Y',0,5);
-	cilindro.add(this.scene,'target2Z',-13,27);
+	var ciliX = cilindro.add(this.scene,'target2X',-13,27);
+	var ciliY = cilindro.add(this.scene,'target2Y',-5,10);
+	var ciliZ = cilindro.add(this.scene,'target2Z',-13,27);
 	var mesa = targets.addFolder("Table");
-	mesa.add(this.scene,'target3X',-13,27);
-	mesa.add(this.scene,'target3Y',0,5);
-	mesa.add(this.scene,'target3Z',-13,27);
+	var mesaX = mesa.add(this.scene,'target3X',-13,27);
+	var mesaY = mesa.add(this.scene,'target3Y',-5,10);
+	var mesaZ = mesa.add(this.scene,'target3Z',-13,27);
 	targets.add(this.scene,'resetTargets');
 	targets.add(this.scene,'TorpedoSpeed',0.5,20);
 
 
-
+	global_var_scene = this.scene;
+	var mexe = function(value){
+		 console.log("mudei");
+ 	 if(global_var_scene != null){
+ 	 	if(global_var_scene.submarine.countTorpedo == 1){
+ 	 		if(global_var_scene.submarine.torpedo.timeAt > 0){
+ 	 			global_var_scene.submarine.updateTarget(1);
+ 	 		}
+ 	 	}
+ 	 	else if(global_var_scene.submarine.countTorpedo == 2){
+ 	 		if(global_var_scene.submarine.torpedo.timeAt > 0){
+ 	 			global_var_scene.submarine.updateTarget(2);
+ 	 		}}
+ 	 		else if(global_var_scene.submarine.countTorpedo == 3){
+ 	 		if(global_var_scene.submarine.torpedo.timeAt > 0){
+ 	 			global_var_scene.submarine.updateTarget(3);
+ 	 		}
+ 	 }}
+	};
+	cuboX.onFinishChange(mexe);
+	cuboY.onFinishChange(mexe);
+	cuboZ.onFinishChange(mexe);
+	ciliX.onFinishChange(mexe);
+	ciliY.onFinishChange(mexe);
+	ciliZ.onFinishChange(mexe);
+	mesaX.onFinishChange(mexe);
+	mesaY.onFinishChange(mexe);
+	mesaZ.onFinishChange(mexe);
+	
 	return true;
 };
 
@@ -106,7 +139,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 	switch (event.keyCode)
 	{
 		case (65):	//A -  only works for capital 'A', as it is
-			this.scene.submarine.rotateSub(4);
+			this.scene.submarine.rotateSub(4*degToRad);
 			break;
 		case(87): //W
 			this.scene.submarine.changeVelocity(1);
@@ -117,7 +150,7 @@ MyInterface.prototype.processKeyboard = function(event) {
 			break;
 
 		case(68): //D
-			this.scene.submarine.rotateSub(-4);
+			this.scene.submarine.rotateSub(-4*degToRad);
 			break; 
 
 		case(81): //Q

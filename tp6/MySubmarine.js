@@ -46,7 +46,7 @@ MySubmarine.prototype.initBuffers = function () {
 MySubmarine.prototype.display = function () {
 	this.scene.pushMatrix();
 	this.scene.translate(this.posX,this.posY,this.posZ);
-	this.scene.rotate(this.rotation*degToRad,0,1,0);
+	this.scene.rotate(this.rotation,0,1,0);
 	this.scene.rotate(this.inclinacao*10*degToRad,1,0,0);
 	//CGFobject.prototype.display.call(this);
 	this.body.display();
@@ -79,8 +79,8 @@ MySubmarine.prototype.rotateSub = function (deg) {
 
 MySubmarine.prototype.goForward = function (comp) {
 	this.dist += comp;
-	this.posX += comp*Math.sin(this.rotation*degToRad);
-	this.posZ += comp*Math.cos(this.rotation*degToRad);
+	this.posX += comp*Math.sin(this.rotation);
+	this.posZ += comp*Math.cos(this.rotation);
 	//console.log(this.dist);
 };
 
@@ -147,10 +147,10 @@ MySubmarine.prototype.fireTorpedo = function(){
 
 	this.torpedo.dist = this.dist;
 	this.torpedo.inclinacao = this.inclinacao;
-	this.torpedo.rotation = this.rotation;
+	this.torpedo.rotation = this.rotation*10*degToRad;
 	this.torpedo.hide = false;
 	this.torpedo.origin.push(this.torpedo.posX,this.torpedo.posY,this.torpedo.posZ);
-	this.torpedo.point2.push(this.torpedo.posX+6*Math.sin(this.torpedo.rotation*degToRad),this.torpedo.posY,this.torpedo.posZ+6*Math.cos(this.torpedo.rotation*degToRad));
+	this.torpedo.point2.push(this.torpedo.posX+6*Math.sin(this.torpedo.rotation),this.torpedo.posY,this.torpedo.posZ+6*Math.cos(this.torpedo.rotation));
 	switch(this.countTorpedo){
 		case 1:
 			this.torpedo.targetLocation = this.scene.target1coords;
@@ -216,5 +216,37 @@ MySubmarine.prototype.update = function(delta){
 
 	}
 
+
+};
+
+MySubmarine.prototype.updateTarget = function(unit){
+
+	var dX = this.calculateBezierDeri(this.torpedo.origin[0],this.torpedo.point2[0],this.torpedo.point3[0],this.torpedo.targetLocation[0],this.torpedo.timeAt);
+	var dY = this.calculateBezierDeri(this.torpedo.origin[1],this.torpedo.point2[1],this.torpedo.point3[1],this.torpedo.targetLocation[1],this.torpedo.timeAt);
+	var dZ = this.calculateBezierDeri(this.torpedo.origin[2],this.torpedo.point2[2],this.torpedo.point3[2],this.torpedo.targetLocation[2],this.torpedo.timeAt);
+	var delta = Math.sqrt(dX*dX + dY*dY + dZ*dZ);
+	this.torpedo.rotation = Math.atan2(dX,dZ);
+	this.torpedo.inclinacao = Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX));
+	this.torpedo.origin = [this.torpedo.posX,this.torpedo.posY,this.torpedo.posZ];
+	this.torpedo.point2 = [this.torpedo.posX+6*dX/delta,this.torpedo.posY+6*dY/delta,this.torpedo.posZ+6*dZ/delta];
+	
+	switch(unit){
+		case 1 : this.torpedo.targetLocation = this.scene.target1coords; break;
+		case 2 : this.torpedo.targetLocation = this.scene.target2coords; break;
+		case 3 : this.torpedo.targetLocation = this.scene.target3coords; break;
+	}
+	
+	this.torpedo.targetLocation[1]+=1; //a lil delta for realism when the torpedo hits
+	this.torpedo.point3 = [this.torpedo.targetLocation[0],this.torpedo.targetLocation[1]+3,this.torpedo.targetLocation[2]];
+	
+	this.torpedo.linearDistance = Math.sqrt(Math.pow(this.torpedo.targetLocation[0]-this.torpedo.posX,2)
+	+Math.pow(this.torpedo.targetLocation[1]-this.torpedo.posY,2)+Math.pow(this.torpedo.targetLocation[2]-this.posZ,2));
+
+	this.torpedo.timeAt = 0;
+	dX = this.calculateBezierDeri(this.torpedo.origin[0],this.torpedo.point2[0],this.torpedo.point3[0],this.torpedo.targetLocation[0],this.torpedo.timeAt);
+	dY = this.calculateBezierDeri(this.torpedo.origin[1],this.torpedo.point2[1],this.torpedo.point3[1],this.torpedo.targetLocation[1],this.torpedo.timeAt);
+	dZ = this.calculateBezierDeri(this.torpedo.origin[2],this.torpedo.point2[2],this.torpedo.point3[2],this.torpedo.targetLocation[2],this.torpedo.timeAt);
+	this.torpedo.rotation = Math.atan2(dX,dZ);
+	this.torpedo.inclinacao = Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX));
 
 };
