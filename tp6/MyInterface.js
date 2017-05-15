@@ -154,10 +154,10 @@ MyInterface.prototype.processKeyboard = function(event) {
 			break; 
 
 		case(81): //Q
-			this.scene.submarine.dive(0.2);
+			//this.scene.submarine.dive(0.2);
 			break;
 		case(69): //E
-			this.scene.submarine.dive(-0.2);
+			//this.scene.submarine.dive(-0.2);
 			break;
 
 		case(80):  //P - subir periscopio

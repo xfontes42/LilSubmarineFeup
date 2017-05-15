@@ -47,7 +47,7 @@ MySubmarine.prototype.display = function () {
 	this.scene.pushMatrix();
 	this.scene.translate(this.posX,this.posY,this.posZ);
 	this.scene.rotate(this.rotation,0,1,0);
-	this.scene.rotate(this.inclinacao*10*degToRad,1,0,0);
+	this.scene.rotate(this.inclinacao,1,0,0);
 	//CGFobject.prototype.display.call(this);
 	this.body.display();
 	this.scene.popMatrix();
@@ -56,7 +56,7 @@ MySubmarine.prototype.display = function () {
 	this.scene.pushMatrix();
 	this.scene.translate(this.torpedo.posX,this.torpedo.posY,this.torpedo.posZ);
 	this.scene.rotate(this.torpedo.rotation,0,1,0);
-	this.scene.rotate(-this.torpedo.inclinacao,1,0,0);
+	this.scene.rotate(this.torpedo.inclinacao,1,0,0);
 	this.scene.submarineAppearances[this.scene.currSubmarineAppearance].apply();
     this.torpedo.display(); 
     this.scene.popMatrix();
@@ -79,8 +79,9 @@ MySubmarine.prototype.rotateSub = function (deg) {
 
 MySubmarine.prototype.goForward = function (comp) {
 	this.dist += comp;
-	this.posX += comp*Math.sin(this.rotation);
-	this.posZ += comp*Math.cos(this.rotation);
+	this.posX += comp*Math.sin(this.rotation)*Math.sin(Math.PI/2 - this.inclinacao);
+	this.posZ += comp*Math.cos(this.rotation)*Math.sin(Math.PI/2 - this.inclinacao);
+	this.posY -= comp*Math.cos(Math.PI/2 - this.inclinacao);
 	//console.log(this.dist);
 };
 
@@ -111,13 +112,8 @@ MySubmarine.prototype.rotateLeme = function(unit){
 };
 
 MySubmarine.prototype.inclina = function(unit){
-	this.inclinacao += unit;
-	if(this.inclinacao > 1)
-		this.inclinacao = 1;
-	else if(this.inclinacao < -1)
-		this.inclinacao = -1;
-	
-	this.body.inclinaHori(this.inclinacao);
+	this.inclinacao += unit*0.1; //0.1 radians
+	this.body.inclinaHori(unit);
 }
 
 MySubmarine.prototype.calculateBezier = function(coord1,coord2,coord3,coord4,t){
@@ -141,16 +137,20 @@ MySubmarine.prototype.calculateBezierDeri = function(coord1,coord2,coord3,coord4
 MySubmarine.prototype.fireTorpedo = function(){
 	this.countTorpedo++;
 	this.torpedo = new MyTorpedo(this.scene);
-	this.torpedo.posX = this.posX;		//x
-	this.torpedo.posZ = this.posZ;   //z
-	this.torpedo.posY = this.posY-1.2; //y
+	this.torpedo.inclinacao = this.inclinacao;
+	this.torpedo.rotation = this.rotation;//*10*degToRad;
+	this.torpedo.posX = this.posX + 1.4*Math.sin(this.torpedo.rotation)*Math.sin(Math.PI/2 - this.torpedo.inclinacao);		//x
+	this.torpedo.posZ = this.posZ + 1.4*Math.cos(this.torpedo.rotation)*Math.sin(Math.PI/2 - this.torpedo.inclinacao);   //z
+	this.torpedo.posY = this.posY - 1.4*Math.cos(this.torpedo.inclinacao); //y  //HOW IS THIS REMOTELY POSSIBLE
 
 	this.torpedo.dist = this.dist;
-	this.torpedo.inclinacao = this.inclinacao;
-	this.torpedo.rotation = this.rotation*10*degToRad;
+	
 	this.torpedo.hide = false;
 	this.torpedo.origin.push(this.torpedo.posX,this.torpedo.posY,this.torpedo.posZ);
-	this.torpedo.point2.push(this.torpedo.posX+6*Math.sin(this.torpedo.rotation),this.torpedo.posY,this.torpedo.posZ+6*Math.cos(this.torpedo.rotation));
+	//this.torpedo.point2.push(this.torpedo.posX+6*Math.sin(this.torpedo.rotation),this.torpedo.posY-Math.sqrt(6)*Math.sin(this.inclinacao),this.torpedo.posZ+6*Math.cos(this.torpedo.rotation)*Math.cos(this.inclinacao));
+this.torpedo.point2.push(this.torpedo.posX+6*Math.sin(this.torpedo.rotation)*Math.sin(Math.PI/2 - this.torpedo.inclinacao),this.torpedo.posY-6*Math.cos(Math.PI/2 - this.torpedo.inclinacao),this.torpedo.posZ+6*Math.cos(this.torpedo.rotation)*Math.sin(Math.PI/2 - this.torpedo.inclinacao));
+
+
 	switch(this.countTorpedo){
 		case 1:
 			this.torpedo.targetLocation = this.scene.target1coords;
@@ -232,7 +232,7 @@ MySubmarine.prototype.update = function(delta){
 		
 		this.torpedo.rotation = Math.atan2(dX,dZ);
 		//this.torpedo.inclinacao = Math.atan2(-dY,dZ); //SOME PROBLEMS HERE WHAT THE FUK
-		this.torpedo.inclinacao = Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX)); //SOME PROBLEMS HERE WHAT THE FUK
+		this.torpedo.inclinacao = -Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX)); //SOME PROBLEMS HERE WHAT THE FUK
 
 		this.scene.target1.update(delta);
 		this.scene.target2.update(delta);
@@ -248,7 +248,7 @@ MySubmarine.prototype.updateTarget = function(unit){
 	var dZ = this.calculateBezierDeri(this.torpedo.origin[2],this.torpedo.point2[2],this.torpedo.point3[2],this.torpedo.targetLocation[2],this.torpedo.timeAt);
 	var delta = Math.sqrt(dX*dX + dY*dY + dZ*dZ);
 	this.torpedo.rotation = Math.atan2(dX,dZ);
-	this.torpedo.inclinacao = Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX));
+	this.torpedo.inclinacao = -Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX));
 	this.torpedo.origin = [this.torpedo.posX,this.torpedo.posY,this.torpedo.posZ];
 	this.torpedo.point2 = [this.torpedo.posX+6*dX/delta,this.torpedo.posY+6*dY/delta,this.torpedo.posZ+6*dZ/delta];
 	
@@ -269,6 +269,6 @@ MySubmarine.prototype.updateTarget = function(unit){
 	dY = this.calculateBezierDeri(this.torpedo.origin[1],this.torpedo.point2[1],this.torpedo.point3[1],this.torpedo.targetLocation[1],this.torpedo.timeAt);
 	dZ = this.calculateBezierDeri(this.torpedo.origin[2],this.torpedo.point2[2],this.torpedo.point3[2],this.torpedo.targetLocation[2],this.torpedo.timeAt);
 	this.torpedo.rotation = Math.atan2(dX,dZ);
-	this.torpedo.inclinacao = Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX));
-
+	//this.torpedo.inclinacao = Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX));
+	this.torpedo.inclinacao = -Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX));
 };
