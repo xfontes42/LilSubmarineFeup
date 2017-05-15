@@ -24,6 +24,7 @@ serialInclude([
 	'MyTurbine.js',
 	'MyTorpedo.js',
 	'MyTarget.js',
+	'MyExplosion.js',
 
 
 	main=function() {

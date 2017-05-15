@@ -3,13 +3,18 @@
  * 
  * @constructor
  */
-
+var waiting_to_disappear = 2;
+var time_animation_explosion = waiting_to_disappear / 2;
 var degToRad = Math.PI / 180.0;
 
 function MyTarget(scene, argument){
 	CGFobject.call(this,scene);
 	this.targetShape = argument;
 	this.hit = false;
+	this.hide = false;
+	this.timeToDie = waiting_to_disappear;
+	this.location = [0,0,0];
+	this.explosion = new MyExplosion(scene,time_animation_explosion);
 
 	if(argument == 0){
 		this.corpo = new MyCylinder(scene, 30,30);	//0 = cilindro
@@ -26,6 +31,9 @@ MyTarget.prototype.constructor=MyTarget;
 
 
 MyTarget.prototype.display = function () {
+   if(this.hide)
+   	return;
+
     if (this.targetShape == 0){					//0 = cilindro
     	
     	if (this.hit)
@@ -74,4 +82,25 @@ MyTarget.prototype.display = function () {
 		this.corpo.display();
 		this.scene.popMatrix();
     }
+
+	if(this.hit){
+		this.scene.pushMatrix();
+		this.explosion.display();
+		this.scene.popMatrix();
+	}
+
+};
+
+
+MyTarget.prototype.update = function(delta){
+	if(this.hit){
+		this.timeToDie -= delta/1000;
+		this.explosion.update(delta);
+		if(this.timeToDie < 0)
+			this.hide = true;
+	}
+	else {
+		this.timeToDie = waiting_to_disappear;
+		this.hide = false;
+	}
 };

@@ -600,6 +600,9 @@ LightingScene.prototype.resetTargets = function ()
 {
 	this.submarine.countTorpedo = 0;
 	this.target1.hit = false;
+	this.target1.hide = false;
 	this.target2.hit = false;
+	this.target2.hide = false;
 	this.target3.hit = false;
+	this.target3.hide = false;
 };

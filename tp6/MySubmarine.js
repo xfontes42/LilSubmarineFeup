@@ -68,7 +68,7 @@ MySubmarine.prototype.display = function () {
 
 MySubmarine.prototype.dive = function (move) {
 	this.posY += move;
-	console.log(this.posY);
+	//console.log(this.posY);
 };
 
 
@@ -171,35 +171,55 @@ MySubmarine.prototype.fireTorpedo = function(){
 	this.torpedo.linearDistance = Math.sqrt(Math.pow(this.torpedo.targetLocation[0]-this.torpedo.posX,2)
 	+Math.pow(this.torpedo.targetLocation[1]-this.torpedo.posY,2)+Math.pow(this.torpedo.targetLocation[2]-this.posZ,2));
 
-	console.log(this.torpedo.origin);
-	console.log(this.torpedo.point2);
-	console.log(this.torpedo.point3);
-	console.log(this.torpedo.targetLocation);
+// 	console.log(this.torpedo.origin);
+// 	console.log(this.torpedo.point2);
+// 	console.log(this.torpedo.point3);
+// 	console.log(this.torpedo.targetLocation);
 };
 
 
 MySubmarine.prototype.update = function(delta){
 	this.goForward(this.velocidade*delta/1000); //delta em milisegundos
 	this.body.update(delta);
-
+	
 
 	if(this.countTorpedo < 1)
 		return;
 	
+	if(this.torpedo.timeAt >= 1){
+		this.scene.target1.update(delta);
+		this.scene.target2.update(delta);
+		this.scene.target3.update(delta);
+		return;
+	}
+		
+
 	this.torpedo.timeAt += (this.scene.TorpedoSpeed*delta)/(this.torpedo.linearDistance*1000);
 	if(this.torpedo.timeAt >= 1){
 		this.torpedo.hide = true;
 		switch(this.countTorpedo){
 			case 1:
 				this.scene.target1.hit = true;
+				this.scene.target1.location = this.scene.target1coords;
+				this.scene.target1.explosion.localExp =  this.scene.target1coords;
 				break;
 			case 2:
 				this.scene.target2.hit = true;
+				this.scene.target2.location = this.scene.target2coords;
+				this.scene.target2.explosion.localExp =  this.scene.target2coords;
+
 				break;
 			case 3:
 				this.scene.target3.hit = true;
+				this.scene.target3.location = this.scene.target3coords;
+				this.scene.target3.explosion.localExp =  this.scene.target3coords;
+
 				break;
 		};
+
+		this.scene.target1.update(delta);
+		this.scene.target2.update(delta);
+		this.scene.target3.update(delta);
 	}
 	else {
 		this.torpedo.posX = this.calculateBezier(this.torpedo.origin[0],this.torpedo.point2[0],this.torpedo.point3[0],this.torpedo.targetLocation[0],this.torpedo.timeAt);
@@ -214,8 +234,10 @@ MySubmarine.prototype.update = function(delta){
 		//this.torpedo.inclinacao = Math.atan2(-dY,dZ); //SOME PROBLEMS HERE WHAT THE FUK
 		this.torpedo.inclinacao = Math.atan2(dY,Math.sqrt(dZ*dZ + dX*dX)); //SOME PROBLEMS HERE WHAT THE FUK
 
+		this.scene.target1.update(delta);
+		this.scene.target2.update(delta);
+		this.scene.target3.update(delta);
 	}
-
 
 };
 
