@@ -94,8 +94,9 @@ LightingScene.prototype.init = function(application) {
 	this.materialA = new CGFappearance(this);
 	this.materialA.setAmbient(0.9,0.2,0.2,1);
 	this.materialA.setDiffuse(0.9,0.2,0.2,1);
-	this.materialA.setSpecular(0.9,0.2,0.2,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
+	this.materialA.setSpecular(0.9,0.2,0.2,1);
 	this.materialA.setShininess(120);  //10
+	this.materialA.loadTexture('./resources/images/Explosion.jpg')
 
 	this.materialB = new CGFappearance(this);
 	this.materialB.setAmbient(0.3,0.3,0.3,1);
