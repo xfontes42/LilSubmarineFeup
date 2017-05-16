@@ -34,6 +34,7 @@ LightingScene.prototype.init = function(application) {
 	this.Luz5 = true;
 	this.Clock = true;
 	this.sub_texture = 'none';
+	this.numberOfCubes = 100;
 
 	this.target1X = -8;
 	this.target1Y = 0;
@@ -91,9 +92,9 @@ LightingScene.prototype.init = function(application) {
 	
 
 	this.materialA = new CGFappearance(this);
-	this.materialA.setAmbient(0.3,0.3,0.3,1);
-	this.materialA.setDiffuse(0.6,0.6,0.6,1);
-	this.materialA.setSpecular(0.0,0.2,0.8,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
+	this.materialA.setAmbient(0.9,0.2,0.2,1);
+	this.materialA.setDiffuse(0.9,0.2,0.2,1);
+	this.materialA.setSpecular(0.9,0.2,0.2,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
 	this.materialA.setShininess(120);  //10
 
 	this.materialB = new CGFappearance(this);
@@ -601,8 +602,11 @@ LightingScene.prototype.resetTargets = function ()
 	this.submarine.countTorpedo = 0;
 	this.target1.hit = false;
 	this.target1.hide = false;
+	this.target1.explosion.reset();
 	this.target2.hit = false;
 	this.target2.hide = false;
+	this.target2.explosion.reset();
 	this.target3.hit = false;
 	this.target3.hide = false;
+	this.target3.explosion.reset();
 };
