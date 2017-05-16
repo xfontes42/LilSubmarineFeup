@@ -35,6 +35,7 @@ LightingScene.prototype.init = function(application) {
 	this.Clock = true;
 	this.sub_texture = 'none';
 	this.numberOfCubes = 100;
+	this.alcance = 6;
 
 	this.target1X = -8;
 	this.target1Y = 0;

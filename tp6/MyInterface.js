@@ -74,6 +74,7 @@ MyInterface.prototype.init = function(application) {
 	
 	this.gui.add(this.scene, 'sub_texture', [ 'none', 'Metal', 'Rust', 'Gold', 'Wood', 'Fabulous'] );
 	this.gui.add(this.scene, 'numberOfCubes',10,1000);
+	this.gui.add(this.scene, 'alcance', 3,15);
 	var targets = this.gui.addFolder("Targets");
 	targets.open();
 	var cubo = targets.addFolder("Cube");

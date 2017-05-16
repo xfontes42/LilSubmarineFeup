@@ -11,6 +11,7 @@ function MyExplosion(scene, timeOfAni){
 	this.timeTotal = timeOfAni;
 	this.localExp = [0,0,0];
 	this.numberOfCubes = scene.numberOfCubes || 100;
+	this.alcance = this.scene.alcance;
 	this.velocidades = [];
 	this.init();
 	this.cube = new MyUnitCubeQuad(scene);
@@ -55,16 +56,28 @@ MyExplosion.prototype.update = function(delta){
 };
 
 MyExplosion.prototype.reset = function(){
+	this.alcance = this.scene.alcance;
 	this.numberOfCubes = this.scene.numberOfCubes;
 	this.timeAnimation = this.timeTotal;
+
 	this.localExp = [0,0,0];
 	this.init();
 };
 
 MyExplosion.prototype.init = function(){
 	this.velocidades = [];
+// 	for(var i = 0; i < this.numberOfCubes; i++){
+// 		this.velocidades.push(6*Math.cos(i/this.numberOfCubes*Math.PI*2),5*Math.cos(Math.random()*Math.PI),6*Math.sin(i/this.numberOfCubes*Math.PI*2));
+// 	}
+	
 	for(var i = 0; i < this.numberOfCubes; i++){
-		this.velocidades.push(6*Math.cos(i/this.numberOfCubes*Math.PI*2),5*Math.cos(Math.random()*Math.PI),6*Math.sin(i/this.numberOfCubes*Math.PI*2));
+		var alfa = Math.random()*2*Math.PI;
+		var delta = Math.random()*2*Math.PI;
+		this.velocidades.push(
+		Math.sin(alfa)*Math.sin(delta)*this.alcance,
+		Math.cos(alfa)*this.alcance,
+		Math.sin(alfa)*Math.cos(delta)*this.alcance
+		);
 	}
 
 };

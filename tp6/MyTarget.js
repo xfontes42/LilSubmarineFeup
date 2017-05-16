@@ -4,7 +4,7 @@
  * @constructor
  */
 var waiting_to_disappear = 2;
-var time_animation_explosion = waiting_to_disappear / 2;
+var time_animation_explosion = waiting_to_disappear / 1.1;
 var degToRad = Math.PI / 180.0;
 
 function MyTarget(scene, argument){
