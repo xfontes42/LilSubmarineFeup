@@ -6,14 +6,13 @@
 function MyUnitCubeQuad(scene) {
 	CGFobject.call(this,scene);
 	this.quad = new MyQuad(this.scene);
-	//this.quad.initBuffers();
 };
 
 MyUnitCubeQuad.prototype = Object.create(CGFobject.prototype);
 MyUnitCubeQuad.prototype.constructor=MyUnitCubeQuad;
 
-
 MyUnitCubeQuad.prototype.display = function(){
+	
 	// front face
  	this.scene.pushMatrix();
  	this.scene.translate(0, 0, 0.5);
@@ -54,6 +53,4 @@ MyUnitCubeQuad.prototype.display = function(){
  	this.scene.translate(0, 0, 0.5);
  	this.quad.display();
  	this.scene.popMatrix();
-  
-
 };

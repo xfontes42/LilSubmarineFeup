@@ -11,7 +11,6 @@ function MyTableLeg(scene) {
 MyTableLeg.prototype = Object.create(CGFobject.prototype);
 MyTableLeg.prototype.constructor=MyTableLeg;
 
-
 MyTableLeg.prototype.display = function(){
 	this.scene.pushMatrix();
 	this.scene.translate(0,1.75,0);

@@ -1,6 +1,3 @@
-//start new lighting scene, discarding but saving the old one...
-
-
 var degToRad = Math.PI / 180.0;
 
 var BOARD_WIDTH = 6.0;
@@ -65,32 +62,19 @@ LightingScene.prototype.init = function(application) {
 	this.axis = new CGFaxis(this);
 
 	// Scene elements
-// 	this.prism = new MyPrism(this, 8, 20);
  	this.cylinder = new MyCylinder(this,8,20);
  	this.semiSphere = new MySemiSphere(this,20,200);
-
  	this.submarine = new MySubmarine(this);
 	this.target1 = new MyTarget(this, 1);
 	this.target3 = new MyTarget(this, 2);
 	this.target2 = new MyTarget(this, 0);
+	this.relogio = new MyClock(this,12);
+	this.floor = new MyQuad(this,0.0,10,0,12.0);
 
 	// Materials
 	this.materialDefault = new CGFappearance(this);
 	
 	this.enableTextures(true);
-	//OLD MATERIALS + SCENE ELEMENTS BEGIN
-	
-	this.table = new MyTable(this);
-	this.wall = new Plane(this);
-
-	this.wallLeft = new MyQuad(this,-1,2,-0.5,1.5);
-	this.relogio = new MyClock(this,12);
-	this.floor = new MyQuad(this,0.0,10,0,12.0);
-	this.boardA = new Plane(this, BOARD_A_DIVISIONS,-0.2,1.2,0,1);
-	this.boardB = new Plane(this, BOARD_B_DIVISIONS, -0.2,1.2,0,1);
-	
-
-	
 
 	this.materialA = new CGFappearance(this);
 	this.materialA.setAmbient(0.9,0.2,0.2,1);
@@ -120,22 +104,6 @@ LightingScene.prototype.init = function(application) {
     this.materialPernas.loadTexture('./resources/images/TargetSides.png');
     this.materialPernas.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
-	this.windowAppearance = new CGFappearance(this);
-	this.windowAppearance.setAmbient(0.0,0.0,0.0,1);
-	this.windowAppearance.setDiffuse(0.9,0.9,0.9,1);
-	this.windowAppearance.setSpecular(0.1,0.1,0.1,1);	
-	this.windowAppearance.setShininess(2); 
-	this.windowAppearance.loadTexture('./resources/images/window.png');
-	this.windowAppearance.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
-
-	this.materialParede2 = new CGFappearance(this);
-	this.materialParede2.setAmbient(0.0,0.0,0.0,1);
-	this.materialParede2.setDiffuse(0.8,0.8,0.8,1);
-	this.materialParede2.setSpecular(0.10,0.10,0.10,1);	
-	this.materialParede2.setShininess(1); 
-	this.materialParede2.loadTexture('./resources/images/babdyduck.png');
-	this.materialParede2.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
-
 	this.materialChao = new CGFappearance(this);
 	this.materialChao.setAmbient(0.1,0.1,0.1,1); //ambiente desativada, nao interessa
 	this.materialChao.setDiffuse(0.5,0.5,0.8,1);
@@ -143,7 +111,6 @@ LightingScene.prototype.init = function(application) {
 	this.materialChao.setShininess(5); 
 	this.materialChao.loadTexture('./resources/images/Sahara.jpg');
 	this.materialChao.setTextureWrap('REPEAT','REPEAT');
-	// OLD MATERIALS + SCENE ELEMENTS END
 
 	this.materialColuna = new CGFappearance(this);
 	this.materialColuna.setAmbient(0.0,0.0,0.0,1);
@@ -153,145 +120,122 @@ LightingScene.prototype.init = function(application) {
 	this.materialColuna.loadTexture('./resources/images/coluna.png');
 	this.materialColuna.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
 
-	this.slidesAppearence = new CGFappearance(this);
-	this.slidesAppearence.setAmbient(0.1,0.1,0.1,1); //ambiente desativada, nao interessa
-	this.slidesAppearence.setDiffuse(0.9,0.9,0.9,1);
-	this.slidesAppearence.setSpecular(0.1,0.1,0.1,1);	
-	this.slidesAppearence.setShininess(2); 
-	this.slidesAppearence.loadTexture('./resources/images/slides.png');
-	this.slidesAppearence.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
-
-	this.boardAppearence = new CGFappearance(this);
-	this.boardAppearence.setAmbient(0.1,0.1,0.1,1); //ambiente desativada, nao interessa
-	this.boardAppearence.setDiffuse(0.1,0.1,0.1,1);
-	this.boardAppearence.setSpecular(0.6,0.6,0.6,1);	
-	this.boardAppearence.setShininess(2); 
-	this.boardAppearence.loadTexture('./resources/images/board.png');
-	this.boardAppearence.setTextureWrap('CLAMP_TO_EDGE','CLAMP_TO_EDGE');
-
 	this.clockAppearence = new CGFappearance(this);
-	this.clockAppearence.setAmbient(0.1,0.1,0.1,1); //ambiente desativada, nao interessa
+	this.clockAppearence.setAmbient(0.1,0.1,0.1,1);
 	this.clockAppearence.setDiffuse(0.8,0.8,0.8,1);
 	this.clockAppearence.setSpecular(0.1,0.1,0.1,1);	
 	this.clockAppearence.setShininess(2); 
 	this.clockAppearence.loadTexture('./resources/images/clock.png');
 
 	this.clockHand = new CGFappearance(this);
-	this.clockHand.setAmbient(0,0,0,1); //ambiente desativada, nao interessa
+	this.clockHand.setAmbient(0,0,0,1);
 	this.clockHand.setDiffuse(0,0,0,1);
 	this.clockHand.setSpecular(0,0,0,1);	
 	this.clockHand.setShininess(2); 
 
 	this.clockHandSecs = new CGFappearance(this);
-	this.clockHandSecs.setAmbient(0,0,0,1); //ambiente desativada, nao interessa
+	this.clockHandSecs.setAmbient(0,0,0,1);
 	this.clockHandSecs.setDiffuse(1,0,0,1);
 	this.clockHandSecs.setSpecular(0,0,0,1);	
 	this.clockHandSecs.setShininess(2); 
 
-
-		//TEXTURAS DO SUBMARINO
+	//---texturas do submarino e dos torpedos---//
 	this.sub_app_Gold = new CGFappearance(this);
 	this.sub_app_Gold.setAmbient(0.3,0.3,0.3,1);
 	this.sub_app_Gold.setDiffuse(0.6,0.6,0.6,1);
-	this.sub_app_Gold.setSpecular(0.0,0.2,0.8,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
-	this.sub_app_Gold.setShininess(120);  //10
+	this.sub_app_Gold.setSpecular(0.0,0.2,0.8,1);
+	this.sub_app_Gold.setShininess(120);
 	this.sub_app_Gold.loadTexture('./resources/images/Gold.jpg');
-	//this.sub_app_Gold.setTextureWrap('REPEAT','REPEAT');
 
 	this.sub_app_Rust = new CGFappearance(this);
 	this.sub_app_Rust.setAmbient(0.3,0.3,0.3,1);
 	this.sub_app_Rust.setDiffuse(0.6,0.6,0.6,1);
-	this.sub_app_Rust.setSpecular(0.0,0.2,0.8,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
-	this.sub_app_Rust.setShininess(120);  //10
+	this.sub_app_Rust.setSpecular(0.0,0.2,0.8,1);
+	this.sub_app_Rust.setShininess(120);
 	this.sub_app_Rust.loadTexture('./resources/images/Rust.jpg');
-	//this.sub_app_Rust.setTextureWrap('REPEAT','REPEAT');
 
 	this.sub_app_Metal = new CGFappearance(this);
 	this.sub_app_Metal.setAmbient(0.3,0.3,0.3,1);
 	this.sub_app_Metal.setDiffuse(0.6,0.6,0.6,1);
-	this.sub_app_Metal.setSpecular(0.0,0.2,0.8,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
-	this.sub_app_Metal.setShininess(120);  //10
+	this.sub_app_Metal.setSpecular(0.0,0.2,0.8,1);
+	this.sub_app_Metal.setShininess(120);
 	this.sub_app_Metal.loadTexture('./resources/images/Metal.jpg');
-	//this.sub_app_Metal.setTextureWrap('REPEAT','REPEAT');
 
 	this.sub_app_Fabulous = new CGFappearance(this);
 	this.sub_app_Fabulous.setAmbient(0.3,0.3,0.3,1);
 	this.sub_app_Fabulous.setDiffuse(0.6,0.6,0.6,1);
-	this.sub_app_Fabulous.setSpecular(0.0,0.2,0.8,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
-	this.sub_app_Fabulous.setShininess(120);  //10
+	this.sub_app_Fabulous.setSpecular(0.0,0.2,0.8,1);
+	this.sub_app_Fabulous.setShininess(120);
 	this.sub_app_Fabulous.loadTexture('./resources/images/Fabulous.jpg');
-	//this.sub_app_Fabulous.setTextureWrap('REPEAT','REPEAT');
 
 	this.sub_app_Wood = new CGFappearance(this);
 	this.sub_app_Wood.setAmbient(0.3,0.3,0.3,1);
 	this.sub_app_Wood.setDiffuse(0.6,0.6,0.6,1);
-	this.sub_app_Wood.setSpecular(0.0,0.2,0.8,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
-	this.sub_app_Wood.setShininess(120);  //10
+	this.sub_app_Wood.setSpecular(0.0,0.2,0.8,1);
+	this.sub_app_Wood.setShininess(120);
 	this.sub_app_Wood.loadTexture('./resources/images/Wood.jpg');
-	//this.sub_app_Wood.setTextureWrap('REPEAT','REPEAT');
+
+	this.glassEye = new CGFappearance(this);
+	this.glassEye.setAmbient(0.3,0.3,0.3,1);
+	this.glassEye.setDiffuse(0.6,0.6,0.6,1);
+	this.glassEye.setSpecular(0.0,0.2,0.8,1);
+	this.glassEye.setShininess(10);
+	this.glassEye.loadTexture('./resources/images/glassEye.jpg');
 
 	this.FaceApp = new CGFappearance(this);
 	this.FaceApp.setAmbient(0.3,0.3,0.3,1);
 	this.FaceApp.setDiffuse(0.6,0.6,0.6,1);
-	this.FaceApp.setSpecular(0.0,0.2,0.8,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
-	this.FaceApp.setShininess(10);  //10
+	this.FaceApp.setSpecular(0.0,0.2,0.8,1);
+	this.FaceApp.setShininess(10);
 	this.FaceApp.loadTexture('./resources/images/HappySmile.png');
-	//this.ShieldApp.setTextureWrap('REPEAT','REPEAT');
 
 	this.TorpedoFace = new CGFappearance(this);
     this.TorpedoFace.setAmbient(0.3,0.3,0.3,1);
     this.TorpedoFace.setDiffuse(0.6,0.6,0.6,1);
-    this.TorpedoFace.setSpecular(0.0,0.2,0.8,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
-    this.TorpedoFace.setShininess(10);  //10
+    this.TorpedoFace.setSpecular(0.0,0.2,0.8,1);
+    this.TorpedoFace.setShininess(10);
     this.TorpedoFace.loadTexture('./resources/images/AngrySmile.png');
 
+	//---texturas dos alvos---//
 	this.TargetRoundTop = new CGFappearance(this);
     this.TargetRoundTop.setAmbient(0.3,0.3,0.3,1);
     this.TargetRoundTop.setDiffuse(0.6,0.6,0.6,1);
     this.TargetRoundTop.setSpecular(0.0,0.2,0.8,1);
-    this.TargetRoundTop.setShininess(10);  //10
+    this.TargetRoundTop.setShininess(10);
     this.TargetRoundTop.loadTexture('./resources/images/TargetRound.png');
 
     this.TargetRoundDestroyed = new CGFappearance(this);
     this.TargetRoundDestroyed.setAmbient(0.3,0.3,0.3,1);
     this.TargetRoundDestroyed.setDiffuse(0.6,0.6,0.6,1);
     this.TargetRoundDestroyed.setSpecular(0.0,0.2,0.8,1);
-    this.TargetRoundDestroyed.setShininess(10);  //10
+    this.TargetRoundDestroyed.setShininess(10);
     this.TargetRoundDestroyed.loadTexture('./resources/images/TargetRoundDestroyed.png');
 
     this.TargetSquareTop = new CGFappearance(this);
     this.TargetSquareTop.setAmbient(0.3,0.3,0.3,1);
     this.TargetSquareTop.setDiffuse(0.6,0.6,0.6,1);
     this.TargetSquareTop.setSpecular(0.0,0.2,0.8,1);
-    this.TargetSquareTop.setShininess(10);  //10
+    this.TargetSquareTop.setShininess(10);
     this.TargetSquareTop.loadTexture('./resources/images/TargetSquare.png');
 
     this.TargetSquareDestroyed = new CGFappearance(this);
     this.TargetSquareDestroyed.setAmbient(0.3,0.3,0.3,1);
     this.TargetSquareDestroyed.setDiffuse(0.6,0.6,0.6,1);
     this.TargetSquareDestroyed.setSpecular(0.0,0.2,0.8,1);
-    this.TargetSquareDestroyed.setShininess(10);  //10
+    this.TargetSquareDestroyed.setShininess(10);
     this.TargetSquareDestroyed.loadTexture('./resources/images/TargetSquareDestroyed.png');
 
     this.TargetSides = new CGFappearance(this);
     this.TargetSides.setAmbient(0.3,0.3,0.3,1);
     this.TargetSides.setDiffuse(0.6,0.6,0.6,1);
     this.TargetSides.setSpecular(0.0,0.2,0.8,1);
-    this.TargetSides.setShininess(10);  //10
+    this.TargetSides.setShininess(10);
     this.TargetSides.loadTexture('./resources/images/TargetSides.png');
 
-	this.glassEye = new CGFappearance(this);
-	this.glassEye.setAmbient(0.3,0.3,0.3,1);
-	this.glassEye.setDiffuse(0.6,0.6,0.6,1);
-	this.glassEye.setSpecular(0.0,0.2,0.8,1);//(0.0,0.0,0.8,1)//(0.8,0.8,0.8,1) //(0.2,0.2,0.2,1)
-	this.glassEye.setShininess(10);  //10
-	this.glassEye.loadTexture('./resources/images/glassEye.jpg');
-	//this.glassEye.setTextureWrap('REPEAT','REPEAT');
-
+	//definicao das texturas do submarino para o menu
 	this.submarineAppearances = [this.materialDefault, this.sub_app_Metal,this.sub_app_Rust , this.sub_app_Gold, this.sub_app_Wood, this.sub_app_Fabulous];
 	this.submarineAppearanceList = { none:0, Metal:1, Rust:2, Gold:3, Wood:4, Fabulous:5 };
 	this.currSubmarineAppearance = 0;
-	//this.setUpdatePeriod(100);
 	this.setUpdatePeriod(1000/this.fps);
 	
 };
@@ -313,7 +257,6 @@ LightingScene.prototype.initLights = function() {
 
 	this.lights[2].setPosition(10.5, 12.0, 5.0, 1.0);
 	this.lights[2].setVisible(true); // show marker on light position (different from enabled)
-
 
 	this.lights[3].setPosition(4, 6.0, 5.0, 1.0);
 	this.lights[3].setVisible(true); // show marker on light position (different from enabled)
@@ -339,9 +282,7 @@ LightingScene.prototype.initLights = function() {
 	this.lights[3].setLinearAttenuation(0.0); //kl
 	this.lights[3].setQuadraticAttenuation(1.0); //kq
 	this.lights[3].enable();
-	
-	//OLD LIGHTS END
-	
+		
 	this.lights[4].setPosition(10, 10, 11, 1);
 	this.lights[4].setVisible(true);
 	this.lights[4].setAmbient(0.5, 0.5, 0.5, 1);
@@ -349,31 +290,6 @@ LightingScene.prototype.initLights = function() {
 	this.lights[4].setSpecular(1.0, 1.0, 1.0, 1.0);
 	this.lights[4].enable();
 
-
-// 	this.lights[0].disable();
-// 	this.lights[1].disable();
-// 	this.lights[2].disable();
-// 	this.lights[3].disable();
-// 	this.lights[4].disable();
-	
- 	//this.setGlobalAmbientLight(0.8, 0.8,0.8, 1);
-	
-// 	// Positions for lights
-// 	this.lights[0].setPosition(5, 5, 5, 1);
-// 	this.lights[0].setVisible(true);
-	
-// 	this.lights[1].setPosition(-5, 5, 5, 1);
-// 	this.lights[1].setVisible(true);
-
-// 	this.lights[0].setAmbient(0, 0, 0, 1);
-// 	this.lights[0].setDiffuse(1.0, 1.0, 1.0, 1.0);
-// 	this.lights[0].setSpecular(1.0, 1.0, 1.0, 1.0);
-// 	this.lights[0].enable();
-
-// 	this.lights[1].setAmbient(0, 0, 0, 1);
-// 	this.lights[1].setDiffuse(1.0, 1.0, 1.0, 1.0);
-// 	this.lights[1].setSpecular(1.0, 1.0, 1.0, 1.0);
-// 	this.lights[1].enable();
 };
 
 LightingScene.prototype.updateLights = function() {
@@ -405,71 +321,10 @@ LightingScene.prototype.display = function() {
 
 	// ---- END Background, camera and axis setup
 
-		// ---- BEGIN OldScene drawing section
 
+	// ---- BEGIN Scene elements drawing section
 
-
-
-
-// 	// Left Wall
-// 	this.pushMatrix();
-// 		this.translate(0, 4, 7.5);
-// 		this.rotate(90 * degToRad, 0, 1, 0);
-// 		this.scale(15, 8, 0.2);
-// 		this.windowAppearance.apply();  //<----- parede cool
-// 		this.wallLeft.display();
-// 	this.popMatrix();
-
-// 	// Plane Wall
-// 	this.pushMatrix();
-// 		this.translate(7.5, 4, 0);
-// 		this.scale(15, 8, 0.2);
-// 		this.materialParede2.apply();  //<----- parede cool
-// 		this.wall.display();
-// 	this.popMatrix();
-
-// 	// First Table
-// 	this.pushMatrix();
-// 		this.translate(5, 0, 8);
-// 		this.table.display();
-// 	this.popMatrix();
-
-// 	// Second Table
-// 	this.pushMatrix();
-// 		this.translate(12, 0, 8);
-// 		this.table.display();
-// 	this.popMatrix();
-
-// 	// Board A
-// 	this.pushMatrix();
-// 		this.translate(4, 4.5, 0.2);
-// 		this.scale(BOARD_WIDTH, BOARD_HEIGHT, 1);
-// 		//this.materialA.apply();
-// 		this.slidesAppearence.apply();
-// 		this.boardA.display();
-// 	this.popMatrix();
-
-// 	// Board B
-// 	this.pushMatrix();
-// 		this.translate(10.5, 4.5, 0.2);
-// 		this.scale(BOARD_WIDTH, BOARD_HEIGHT, 1);
-// 		//this.materialB.apply();
-// 		this.boardAppearence.apply();
-// 		this.boardB.display();
-// 	this.popMatrix();
-
-// 	// ---- END OldScene drawing section
-
-// 	// ---- BEGIN Primitive drawing section
-
-
-// // 	// Prism
-// // 	this.pushMatrix();
-// // 	this.translate(5,0,0);
-// // 	this.prism.display();
-// // 	this.popMatrix();
-
-		// Floor
+		// Chao
 	this.pushMatrix();
 	this.translate(7.5, 0, 7.5);
 	this.rotate(-90 * degToRad, 1, 0, 0);
@@ -478,7 +333,7 @@ LightingScene.prototype.display = function() {
 	this.floor.display();
 	this.popMatrix();
 
-	//Cylinder
+		// Cilindro
 	this.pushMatrix();
 	this.translate(0,5,8);
 	this.rotate(90*degToRad, 1,0,0);
@@ -488,13 +343,13 @@ LightingScene.prototype.display = function() {
 	this.cylinder.display();
 	this.popMatrix();
 
-	//Submarino
+		//Submarino
 	this.pushMatrix();
 	this.submarineAppearances[this.currSubmarineAppearance].apply();
 	this.submarine.display();
 	this.popMatrix();
 
-	//Alvos
+		//Alvos
 	this.pushMatrix();
     this.translate(this.target1X,this.target1Y,this.target1Z);
     this.target1.display();		//cubo
@@ -510,21 +365,14 @@ LightingScene.prototype.display = function() {
     this.target3.display();		//mesa
     this.popMatrix();
 
-	//Relogio
+		//Relogio
 	this.pushMatrix();
 	this.translate(10,7,9);
 	this.materialDefault.apply();
 	this.relogio.display();
 	this.popMatrix();
 
-
-// 	//SemiSphere
-// 	this.pushMatrix();
-// 	this.translate(0,5,0);
-// 	this.semiSphere.display();
-// 	this.popMatrix();
-
-	// ---- END Primitive drawing section
+	// ---- END Scene elements drawing section
 };
 
 
@@ -532,7 +380,7 @@ LightingScene.prototype.update = function(currTime) {
 	this.gl.clearColor(this.Red, this.Green,this.Blue, 1.0);
 	this.setGlobalAmbientLight(this.LuzAmbiente,this.LuzAmbiente,this.LuzAmbiente, 1.0);
 	
-	this.setUpdatePeriod(1000/this.fps); //VER SE ISTO NAO DA PROBLEMAS
+	this.setUpdatePeriod(1000/this.fps);
 	
 	this.currSubmarineAppearance = this.submarineAppearanceList[this.sub_texture];
 
